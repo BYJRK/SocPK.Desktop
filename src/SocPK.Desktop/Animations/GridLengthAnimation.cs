@@ -34,14 +34,40 @@ namespace SocPK.Desktop.Animations
             typeof(GridLengthAnimation)
         );
 
-        public override object GetCurrentValue(object defaultOriginValue, object defaultDestinationValue, AnimationClock animationClock)
+        public override object GetCurrentValue(
+            object defaultOriginValue,
+            object defaultDestinationValue,
+            AnimationClock animationClock
+        )
         {
-            return new GridLength(animationClock.CurrentProgress.Value * (To.Value - From.Value) + From.Value, GridUnitType.Star);
+            var easing = EasingFunction;
+
+            var progress = !(easing is null)
+                ? easing.Ease(animationClock.CurrentProgress.Value)
+                : animationClock.CurrentProgress.Value;
+
+            return new GridLength(
+                progress * (To.Value - From.Value) + From.Value,
+                GridUnitType.Star
+            );
         }
 
         protected override Freezable CreateInstanceCore()
         {
             return new GridLengthAnimation();
+        }
+
+        public static readonly DependencyProperty EasingFunctionProperty =
+            DependencyProperty.Register(
+                "EasingFunction",
+                typeof(IEasingFunction),
+                typeof(GridLengthAnimation)
+            );
+
+        public IEasingFunction EasingFunction
+        {
+            get => (IEasingFunction)GetValue(EasingFunctionProperty);
+            set => SetValue(EasingFunctionProperty, value);
         }
     }
 }

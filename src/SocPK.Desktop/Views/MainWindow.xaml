@@ -146,12 +146,20 @@
                                 <ColumnDefinition Width="70" />
                                 <ColumnDefinition Name="barColumn" Width="{Binding Score, Converter={vc:GridLengthConverter Total=300}}">
                                     <i:Interaction.Behaviors>
-                                        <be:GridLengthAnimationBehavior From="0*" To="{Binding Score, Converter={vc:GridLengthConverter Total=300}}" Duration="0:0:1" />
+                                        <be:GridLengthAnimationBehavior From="0*" To="{Binding Score, Converter={vc:GridLengthConverter Total=300}}" Duration="0:0:0.75">
+                                            <be:GridLengthAnimationBehavior.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut" />
+                                            </be:GridLengthAnimationBehavior.EasingFunction>
+                                        </be:GridLengthAnimationBehavior>
                                     </i:Interaction.Behaviors>
                                 </ColumnDefinition>
                                 <ColumnDefinition Name="scoreColumn" Width="{Binding Score, Converter={vc:GridLengthConverter Total=300, IsReverse=True}}">
                                     <i:Interaction.Behaviors>
-                                        <be:GridLengthAnimationBehavior From="1*" To="{Binding Score, Converter={vc:GridLengthConverter Total=300, IsReverse=True}}" Duration="0:0:1" />
+                                        <be:GridLengthAnimationBehavior From="1*" To="{Binding Score, Converter={vc:GridLengthConverter Total=300, IsReverse=True}}" Duration="0:0:0.75">
+                                            <be:GridLengthAnimationBehavior.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut" />
+                                            </be:GridLengthAnimationBehavior.EasingFunction>
+                                        </be:GridLengthAnimationBehavior>
                                     </i:Interaction.Behaviors>
                                 </ColumnDefinition>
                             </Grid.ColumnDefinitions>

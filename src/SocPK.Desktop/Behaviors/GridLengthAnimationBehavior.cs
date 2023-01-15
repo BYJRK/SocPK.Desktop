@@ -32,15 +32,28 @@ namespace SocPK.Desktop.Behaviors
             typeof(GridLengthAnimationBehavior)
         );
 
-        public TimeSpan Duration
+        public IEasingFunction EasingFunction
         {
-            get { return (TimeSpan)GetValue(DurationProperty); }
+            get { return (IEasingFunction)GetValue(EasingFunctionProperty); }
+            set { SetValue(EasingFunctionProperty, value); }
+        }
+
+        public static readonly DependencyProperty EasingFunctionProperty =
+            DependencyProperty.Register(
+                "EasingFunction",
+                typeof(IEasingFunction),
+                typeof(GridLengthAnimationBehavior)
+            );
+
+        public Duration Duration
+        {
+            get { return (Duration)GetValue(DurationProperty); }
             set { SetValue(DurationProperty, value); }
         }
 
         public static readonly DependencyProperty DurationProperty = DependencyProperty.Register(
             nameof(Duration),
-            typeof(TimeSpan),
+            typeof(Duration),
             typeof(GridLengthAnimationBehavior)
         );
 
@@ -49,9 +62,13 @@ namespace SocPK.Desktop.Behaviors
             var animation = new GridLengthAnimation();
             animation.From = From;
             animation.To = To;
-            animation.Duration = new Duration(Duration);
+            animation.Duration = Duration;
+            animation.EasingFunction = EasingFunction;
             Storyboard.SetTarget(animation, AssociatedObject);
-            Storyboard.SetTargetProperty(animation, new PropertyPath(ColumnDefinition.WidthProperty));
+            Storyboard.SetTargetProperty(
+                animation,
+                new PropertyPath(ColumnDefinition.WidthProperty)
+            );
             var storyboard = new Storyboard();
             storyboard.Children.Add(animation);
             AssociatedObject.Loaded += (sender, e) => storyboard.Begin(AssociatedObject);
